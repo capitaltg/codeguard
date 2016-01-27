@@ -1,0 +1,19 @@
+{namespace com.capitaltg.bbcodeguard}
+
+/**
+ * @param config
+ * @param? errors
+ */
+{template .verifyconfig}
+
+    {call aui.form.textField}
+        {param id: 'regexToVerify' /}
+        {param isRequired: false /}
+        {param value: $config['regexToVerify'] /}
+        {param labelContent: 'Regular Expression' /}
+        {param descriptionText: 'Regular expression identifying branches to be verified' /}
+        {param extraClasses: 'long' /}
+        {param errorTexts: $errors ? $errors['regexToVerify'] : null /}
+    {/call}
+
+{/template}

@@ -1,0 +1,32 @@
+{namespace com.atlassian.stash.repository.hook.ref}
+/**
+ * @param config
+ * @param errors
+ */
+{template .pluginConfig}
+
+  {call aui.form.textField}
+		{param id: 'jenkinsBaseUrl' /}
+		{param labelContent: 'Jenkins Base URL' /}
+		{param value: $config['jenkinsBaseUrl'] /}
+		{param descriptionText: 'Default Jenkins server URL' /}
+		{param errorTexts: $errors ? $errors['jenkinsBaseUrl'] : null /}
+  {/call}
+
+  {call aui.form.textField}
+		{param id: 'username' /}
+		{param labelContent: 'Username' /}
+		{param value: $config['username'] /}
+		{param descriptionText: 'Username CodeGuard should use to connect to Jenkins and Bitbucket server' /}
+		{param errorTexts: $errors ? $errors['username'] : null /}
+  {/call}
+
+  {call aui.form.passwordField}
+		{param id: 'password' /}
+		{param labelContent: 'Password' /}
+		{param value: $config['jenkinsPassword'] /}
+		{param descriptionText: 'Password CodeGuard should use to connect to Jenkins and Bitbucket server' /}
+		{param errorTexts: $errors ? $errors['password'] : null /}
+  {/call}
+
+{/template}

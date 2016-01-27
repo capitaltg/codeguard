@@ -1,0 +1,19 @@
+{namespace com.capitaltg.bbcodeguard}
+
+/**
+ * @param config
+ * @param? errors
+ */
+{template .publishconfig}
+
+    {call aui.form.textField}
+        {param id: 'regexToPublish' /}
+        {param isRequired: false /}
+        {param value: $config['regexToPublish'] /}
+        {param labelContent: 'Regular Expression' /}
+        {param descriptionText: 'Regular expression identifying branches to be published' /}
+        {param extraClasses: 'long' /}
+        {param errorTexts: $errors ? $errors['regexToPublish'] : null /}
+    {/call}
+
+{/template}

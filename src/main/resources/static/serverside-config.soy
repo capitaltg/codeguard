@@ -1,0 +1,45 @@
+{namespace com.atlassian.stash.repository.hook.ref}
+
+/**
+ * @param config
+ * @param? errors
+ **/
+{template .config}
+<html>
+    <head>
+        <meta name="decorator" content="atl.admin">
+        <title>Bitbucket CodeGuard Configuration</title>
+    </head>
+    <body>
+	{call aui.group.group}
+	{param content}
+        {call widget.aui.form.form}
+	        {param action: '' /}
+	        {param content}
+		        <h2>Bitbucket CodeGuar Configuration</h2>
+		        
+		        {call .pluginConfig}
+	        		{param config: $config /}
+	        		{param errors: $errors /}
+				{/call}
+				
+                {call widget.aui.form.buttons}
+                    {param content}
+                        {call widget.aui.form.submit}
+                            {param id: 'submit' /}
+                            {param isPrimary: true /}
+                            {param accessKey: 's' /}
+                            {param label: 'Save' /}
+                        {/call}
+                        {call widget.aui.form.cancelButton}
+                            {param href: nav_admin() /}
+                        {/call}
+                    {/param}
+                {/call}
+		{/param}
+	{/call}
+	{/param}
+	{/call}
+    </body>
+</html>
+{/template}

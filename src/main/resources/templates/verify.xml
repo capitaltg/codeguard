@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <description>Verify job created by CodeGuard.  Any manual updates to this job will be overwritten by subsequent builds.</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>fromBranch</name>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>toBranch</name>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>pr</name>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>username</name>
+          <defaultValue>@username@</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.PasswordParameterDefinition>
+          <name>password</name>
+          <defaultValue>@password@</defaultValue>
+        </hudson.model.PasswordParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+  </properties>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.3.5">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>@repositoryURL@</url>
+        <credentialsId>@credentialsId@</credentialsId>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>$fromBranch</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions>
+      <hudson.plugins.git.extensions.impl.PreBuildMerge>
+        <options>
+          <mergeRemote>origin</mergeRemote>
+          <mergeTarget>$toBranch</mergeTarget>
+          <mergeStrategy>default</mergeStrategy>
+          <fastForwardMode>FF</fastForwardMode>
+        </options>
+      </hudson.plugins.git.extensions.impl.PreBuildMerge>
+    </extensions>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>#!/bin/bash
+curl -H &quot;Content-Type: application/json&quot; -u $username:$password @bitbucketBaseURL@/rest/api/1.0/projects/@project@/repos/@repo@/pull-requests/$pr/comments -X POST -d &quot;{\&quot;text\&quot;:\&quot;Started new verification job [(view jenkins console)](@jenkinsurl@/job/@project@_@repo@_verify/$BUILD_NUMBER/console)\&quot;}&quot;
+./codeguard/verify.sh
+RETURN_CODE=$?
+if [ &quot;$RETURN_CODE&quot; = &quot;0&quot; ]; then
+   curl -H &quot;Content-Type: application/json&quot; -u $username:$password @bitbucketBaseURL@/rest/api/1.0/projects/@project@/repos/@repo@/pull-requests/$pr/comments -X POST -d &quot;{\&quot;text\&quot;:\&quot;\u2714 Verification job _succeeded_ [(view jenkins console)](@jenkinsurl@/job/@project@_@repo@_verify/$BUILD_NUMBER/console)\&quot;}&quot;
+else
+   curl -H &quot;Content-Type: application/json&quot; -u $username:$password @bitbucketBaseURL@/rest/api/1.0/projects/@project@/repos/@repo@/pull-requests/$pr/comments -X POST -d &quot;{\&quot;text\&quot;:\&quot;\u2716 Verification job _failed_ [(view jenkins console)](@jenkinsurl@/job/@project@_@repo@_verify/$BUILD_NUMBER/console)\&quot;}&quot;
+   exit $RETURN_CODE
+fi
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

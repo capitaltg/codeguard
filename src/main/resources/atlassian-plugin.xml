@@ -1,0 +1,62 @@
+<atlassian-plugin key="com.capitaltg.bbcodeguard" name="Bitbucket CodeGuard" plugins-version="2">
+	<plugin-info>
+		<description>Bitbucket CodeGuard provides hooks to Jenkins to ensure tests pass before allowing pull requests to be
+		merged.  It also triggers publish jobs after pull requests merge into selected branches or tags are added.
+		Documentation is available at https://github.com/capitaltg/codeguard</description>
+		<version>0.1.0</version>
+		<vendor name="Capital Technology Group" url="https://www.capitaltg.com" />
+		<param name="vendor-logo">icons/square2.png</param>
+		<param name="configure.url">/plugins/servlet/codeguard/config</param>
+        <param name="plugin-icon">icons/square2.png</param>
+        <param name="plugin-logo">icons/square2.png</param>
+	</plugin-info>
+
+	<!-- Imported Bitbucket Services -->
+	<component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager" />
+    <component-import key="pluginSettingsFactory" interface="com.atlassian.sal.api.pluginsettings.PluginSettingsFactory" />
+    <component-import key="pullRequestService" interface="com.atlassian.bitbucket.pull.PullRequestService" />
+    <component-import key="soyTemplateRenderer" interface="com.atlassian.soy.renderer.SoyTemplateRenderer"/>
+
+	<!-- CodeGuard Components -->
+	<component key="jenkinsManager" class="com.capitaltg.bbcodeguard.jenkins.JenkinsManager" />
+	<component key="pullRequestListener" class="com.capitaltg.bbcodeguard.hooks.PullRequestListener" />
+
+	<!--  Hooks -->
+	<repository-hook key="jenkinsPublishHook" name="CodeGuard Publish Hook" class="com.capitaltg.bbcodeguard.hooks.PostMergePublishHook">
+		<description>Hook for triggering publishing builds in jenkins after pull requests merge</description>
+        <icon>icons/square2.png</icon>
+        <config-form name="Simple Hook Config" key="hook-config">
+            <view>com.capitaltg.bbcodeguard.publishconfig</view>
+            <directory location="/static/"/>
+        </config-form>
+		<validator>com.capitaltg.bbcodeguard.ConfigurationValidator</validator>
+	</repository-hook>
+	<repository-hook key="jenkinsVerifyHook" name="CodeGuard Verify Hook" class="com.capitaltg.bbcodeguard.hooks.PreMergeVerifyHook">
+		<description>Hook for triggering publishing builds in jenkins after pull requests merge</description>
+        <icon>icons/square2.png</icon>
+        <config-form name="Simple Hook Config" key="hook-config">
+            <view>com.capitaltg.bbcodeguard.verifyconfig</view>
+            <directory location="/static/"/>
+        </config-form>
+		<validator>com.capitaltg.bbcodeguard.ConfigurationValidator</validator>
+	</repository-hook>
+
+	<!--  Pre-merge check -->
+    <merge-check key="preMergeVerifyCheck" class="com.capitaltg.bbcodeguard.hooks.PreMergeVerifyCheck"/>
+    
+	<!--  Servlets -->
+	<servlet key="configurationServlet" class="com.capitaltg.bbcodeguard.servlet.ConfigurationServlet" name="CodeGuard Configuration Servlet">
+		<url-pattern>/codeguard/config</url-pattern>
+	</servlet>
+
+	<!--  Other Resources -->
+    <client-resource key="codeguardian-publish-config">
+        <directory location="/static/">
+            <include>/**/simple.soy</include>
+            <include>/**/serverside-config.soy</include>
+        </directory>
+        <dependency>com.atlassian.bitbucket.server.bitbucket-web:server-soy-templates</dependency>
+        <dependency>com.atlassian.bitbucket.server.bitbucket-web:global</dependency>
+    </client-resource>
+
+</atlassian-plugin>
