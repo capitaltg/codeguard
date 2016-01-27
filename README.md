@@ -25,8 +25,7 @@ hook automates publishing of artifacts after successful merges into or tagging o
 4. For each repository, enable the CodeGuard Publish Hook and define a regular expression
    that identifies branches and tags that should be published.  For example you can use:
    ```(develop|master|v(\d)+\.(\d)+\.(\d))``` to have CodeGuard publish any time
-   code is merged into develop or master or any time a tag is pushed that looks like 
-   ```v1.2.3``` 
+   code is merged into develop or master or any time a tag is pushed that looks v1.2.3.
    The publishing job will run the script: ```codeguard/publish.sh``` that you create
    in the root of your repository.
 
