@@ -1,8 +1,8 @@
 <atlassian-plugin key="com.capitaltg.bbcodeguard" name="Bitbucket CodeGuard" plugins-version="2">
 	<plugin-info>
-		<description>Bitbucket CodeGuard provides hooks to Jenkins to ensure tests pass before allowing pull requests to be
-		merged.  It also triggers publish jobs after pull requests merge into selected branches or tags are added.
-		Documentation is available at https://github.com/capitaltg/codeguard</description>
+		<description>Provides hooks to manage Jenkins verification and publishing jobs.  All Jenkins
+		jobs are created and fully managed by the plugin.
+		</description>
 		<version>0.1.0</version>
 		<vendor name="Capital Technology Group" url="https://www.capitaltg.com" />
 		<param name="vendor-logo">icons/square2.png</param>
