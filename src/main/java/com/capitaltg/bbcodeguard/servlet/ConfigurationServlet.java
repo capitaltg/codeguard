@@ -115,10 +115,14 @@ public class ConfigurationServlet extends HttpServlet {
 		String jenkinsBaseUrl = ((String[])submittedSettings.get("jenkinsBaseUrl"))[0];
 		String username = ((String[])submittedSettings.get("username"))[0];
 		String password = ((String[])submittedSettings.get("password"))[0];
+		String bbusername = ((String[])submittedSettings.get("bbusername"))[0];
+		String bbpassword = ((String[])submittedSettings.get("bbpassword"))[0];
 		
 		logger.info("Set jenkinsBaseUrl: {}", jenkinsBaseUrl);
 		logger.info("Set username: {}", username);
 		logger.info("Set password: {}", password);
+		logger.info("Set bbusername: {}", bbusername);
+		logger.info("Set bbpassword: {}", bbpassword);
 		
 		try {
 			jenkinsManager.checkAdminCredentials(jenkinsBaseUrl, username, password);
@@ -133,12 +137,14 @@ public class ConfigurationServlet extends HttpServlet {
 
 		String credentialsId = jenkinsManager.findCredentials(jenkinsBaseUrl, username, password, username);
 		if(credentialsId==null){
-			errors.put("jenkinsbbuser", Arrays.asList("Jenkins instance does not have user credentials defined for "+username));
+			errors.put("jenkinsbbuser", Arrays.asList("Jenkins server does not have user credentials defined for "+username));
 		}
 
 		storedSettings.put("jenkinsBaseUrl", jenkinsBaseUrl);
 		storedSettings.put("username", username);
 		storedSettings.put("password", password);
+		storedSettings.put("bbusername", bbusername);
+		storedSettings.put("bbpassword", bbpassword);
 		storedSettings.put("credentialsId", credentialsId);
 		
 		Map<String, Object> map = Maps.newHashMap();

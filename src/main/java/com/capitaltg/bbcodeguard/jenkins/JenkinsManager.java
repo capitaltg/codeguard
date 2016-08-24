@@ -65,6 +65,8 @@ public class JenkinsManager {
 	private String baseURL = null;
 	private String username = null;
 	private String password = null;
+	private String bbusername = null;
+	private String bbpassword = null;
 	private String credentialsId = null;
 	
 	public JenkinsManager(PluginSettingsFactory pluginSettingsFactory,
@@ -83,6 +85,8 @@ public class JenkinsManager {
 		baseURL = settings.get("jenkinsBaseUrl");
 		username = settings.get("username");
 		password = settings.get("password");
+		bbusername = settings.get("bbusername");
+		bbpassword = settings.get("bbpassword");
 		credentialsId = settings.get("credentialsId");
 		logger.info("Reloaded configuration settings: {}",settings);
 	}
@@ -171,6 +175,8 @@ public class JenkinsManager {
 			map.put("repositoryURL", repositoryURL);
 			map.put("username",username);
 			map.put("password",password);
+			map.put("bbusername",bbusername);
+			map.put("bbpassword",bbpassword);
 		logger.info("Created xml configuration for {} {} verify job",project, slug);
 		return StringUtils.readResourceAndUpdateText("templates/verify.xml", map);
 	}
@@ -288,7 +294,7 @@ public class JenkinsManager {
 			} else if(responseCode == 403) {
 				throw new ConfigurationException("User does not have permission to create jobs on Jenkins server");
 			} else if(String.valueOf(responseCode).matches("40\\d")) {
-				throw new ConfigurationException("Invalid jenkins URL");
+				throw new ConfigurationException("Invalid jenkins URL: "+responseMessage);
 			}
 			logger.info("Admin credentials for {}/**** @{} work.  Returned response {} - {}", username,baseurl,responseCode,responseMessage);
 			deleteJob(baseurl, jobName);
