@@ -16,11 +16,11 @@
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>username</name>
-          <defaultValue>@username@</defaultValue>
+          <defaultValue>@bbusername@</defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.PasswordParameterDefinition>
           <name>password</name>
-          <defaultValue>@password@</defaultValue>
+          <defaultValue>@bbpassword@</defaultValue>
         </hudson.model.PasswordParameterDefinition>
       </parameterDefinitions>
     </hudson.model.ParametersDefinitionProperty>

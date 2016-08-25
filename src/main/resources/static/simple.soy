@@ -17,7 +17,7 @@
 		{param id: 'username' /}
 		{param labelContent: 'Username' /}
 		{param value: $config['username'] /}
-		{param descriptionText: 'Username CodeGuard should use to connect to Jenkins and Bitbucket server' /}
+		{param descriptionText: 'Username CodeGuard should use to connect to Jenkins server' /}
 		{param errorTexts: $errors ? $errors['username'] : null /}
   {/call}
 
@@ -25,8 +25,24 @@
 		{param id: 'password' /}
 		{param labelContent: 'Password' /}
 		{param value: $config['jenkinsPassword'] /}
-		{param descriptionText: 'Password CodeGuard should use to connect to Jenkins and Bitbucket server' /}
+		{param descriptionText: 'Password CodeGuard should use to connect to Jenkins server' /}
 		{param errorTexts: $errors ? $errors['password'] : null /}
+  {/call}
+
+  {call aui.form.textField}
+		{param id: 'bbusername' /}
+		{param labelContent: 'Bitbucket Username' /}
+		{param value: $config['bbusername'] /}
+		{param descriptionText: 'Username CodeGuard should use to connect to Bitbucket server' /}
+		{param errorTexts: $errors ? $errors['bbusername'] : null /}
+  {/call}
+
+  {call aui.form.passwordField}
+		{param id: 'bbpassword' /}
+		{param labelContent: 'Bitbucket Password' /}
+		{param value: $config['bbjenkinsPassword'] /}
+		{param descriptionText: 'Password CodeGuard should use to connect to Bitbucket server' /}
+		{param errorTexts: $errors ? $errors['bbpassword'] : null /}
   {/call}
 
 {/template}
